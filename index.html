@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101a30">
+    <meta name="description" content="A data-led look at the batters and bowlers who stay reliable when the game is on the line.">
+    <title>SupeRR Selector — Pressure Index</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="data/default-data.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#" aria-label="SupeRR Selector home">
+          <span class="brand-mark">S<span>R</span></span>
+          <span class="brand-copy">SupeRR<span>SELECTOR</span></span>
+        </a>
+        <div class="workspace-label">WORKSPACE</div>
+        <nav class="main-nav" aria-label="Main navigation">
+          <a class="nav-link active" href="#overview"><span class="nav-icon">◫</span>Overview</a>
+          <a class="nav-link" href="#rankings"><span class="nav-icon">↗</span>Player rankings</a>
+          <a class="nav-link" href="#methodology"><span class="nav-icon">◎</span>Methodology</a>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="season-card">
+            <span class="season-orbit">✳</span>
+            <span class="season-kicker">ROUND 1 · SEASON 2</span>
+            <strong>Pressure reveals<br>the player.</strong>
+            <span class="season-caption">A closer look at composure when it counts.</span>
+          </div>
+          <button class="sidebar-import" id="sidebarImport" type="button">
+            <span class="upload-icon">↑</span><span><strong>Load your data</strong><small>Import the supplied CSV files</small></span><span class="arrow">→</span>
+          </button>
+          <div class="profile">
+            <span class="avatar">RR</span><span class="profile-name">Match intelligence<small>ANALYTICS DESK</small></span><span class="profile-dots">···</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content" id="overview">
+        <header class="topbar">
+          <div class="breadcrumbs">Analytics <span>/</span> <strong>Pressure index</strong></div>
+          <div class="topbar-right">
+            <span class="live-dot"></span><span class="data-status" id="dataStatus">Awaiting dataset</span>
+            <button class="button button-outline" id="importButton" type="button"><span>↑</span> Import data</button>
+          </div>
+        </header>
+
+        <section class="page-heading">
+          <div>
+            <div class="eyebrow"><span class="eyebrow-line"></span>THE SupeRR SELECTOR · ROUND 1</div>
+            <h1>Pressure <span>Index</span></h1>
+            <p class="intro">The game gets louder. These are the players who get better.</p>
+          </div>
+          <div class="heading-meta">          <span class="meta-icon">◷</span><span><strong id="updatedLabel">Your dataset, your lens</strong><small>Historical IPL &amp; T20I analysis</small></span></div>
+        </section>
+
+        <section class="filter-panel" aria-label="Dashboard filters">
+          <div class="filter-header">
+            <div><span class="filter-icon">☷</span><strong>Match filters</strong><span class="filter-hint">Shape your analysis</span></div>
+            <button class="reset-button" type="button" id="resetFilters">↺ <span>Reset all</span></button>
+          </div>
+          <div class="filter-grid">
+            <label class="filter-field"><span>COMPETITION</span><select id="competitionFilter" disabled><option value="">All competitions</option></select></label>
+            <label class="filter-field"><span>FORMAT</span><select id="formatFilter" disabled><option value="">All formats</option></select></label>
+            <label class="filter-field"><span>SEASON</span><select id="seasonFilter" disabled><option value="">All seasons</option></select></label>
+            <label class="filter-field"><span>TEAM</span><select id="teamFilter" disabled><option value="">All teams</option></select></label>
+            <label class="filter-field"><span>PLAYER</span><select id="playerFilter" disabled><option value="">All players</option></select></label>
+            <label class="filter-field"><span>VENUE COUNTRY</span><select id="venueFilter" disabled><option value="">All venues</option></select></label>
+            <label class="filter-field"><span>MATCH STAGE</span><select id="stageFilter" disabled><option value="">All stages</option></select></label>
+            <label class="filter-field"><span>INNINGS</span><select id="inningsFilter" disabled><option value="">Both innings</option><option value="1">1st innings</option><option value="2">2nd innings</option></select></label>
+            <label class="filter-field"><span>PRESSURE LENS</span><select id="pressureFilter" disabled><option value="all">All pressure signals</option><option value="chase">Chase under strain</option><option value="late">Final five overs</option><option value="wickets">Four or fewer wickets left</option><option value="knockout">Knockout matches</option><option value="close">Close finishes</option></select></label>
+            <label class="filter-field"><span>MIN. PRESSURE BALLS</span><select id="sampleFilter" disabled><option value="12">12 balls</option><option value="24">24 balls</option><option value="36">36 balls</option><option value="60">60 balls</option></select></label>
+          </div>
+          <div class="active-filters" id="activeFilters"><span class="filter-count">0</span> active filters <span class="filter-separator">·</span><span class="filter-description" id="filterDescription">Pressure is measured against each player's non-pressure baseline</span></div>
+        </section>
+
+        <section class="stat-grid" aria-label="Dataset summary">
+          <article class="stat-card stat-card-primary">
+            <div class="stat-top"><span>PRESSURE BALLS IN VIEW</span><span class="stat-symbol">◉</span></div>
+            <div class="stat-value" id="pressureBallsStat">—</div>
+            <div class="stat-foot"><span class="stat-foot-dot"></span><span id="pressureBallsNote">Load match data to begin</span></div>
+            <div class="stat-decoration"></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span>QUALIFIED PLAYERS</span><span class="stat-symbol">♙</span></div>
+            <div class="stat-value" id="playersStat">—</div>
+            <div class="stat-foot"><span class="neutral-dot"></span><span id="playersNote">In current ranking view</span></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span>MATCHES IN VIEW</span><span class="stat-symbol">▤</span></div>
+            <div class="stat-value" id="matchesStat">—</div>
+            <div class="stat-foot"><span class="neutral-dot"></span><span id="dateRangeNote">From your selected filters</span></div>
+          </article>
+          <article class="stat-card stat-card-accent">
+            <div class="stat-top"><span>TOP PRESSURE RATING</span><span class="stat-symbol">✳</span></div>
+            <div class="stat-value" id="topRatingStat">—<small>/100</small></div>
+            <div class="stat-foot"><span class="rating-chip">INDEX</span><span id="topRatingNote">Confidence-weighted</span></div>
+          </article>
+        </section>
+
+        <section class="insight-grid">
+          <article class="panel chart-panel">
+            <div class="panel-heading">
+              <div><div class="eyebrow eyebrow-small">PERFORMANCE UNDER PRESSURE</div><h2>Composure, by the numbers</h2></div>
+              <div class="chart-legend"><span><i class="legend-pressure"></i>Pressure</span><span><i class="legend-baseline"></i>Baseline</span></div>
+            </div>
+            <div class="chart-wrap" id="trendChart">
+              <div class="chart-empty"><span class="empty-chart-icon">⌁</span><strong>Your pressure story starts here</strong><span>Import your CSV folder to see pressure vs. baseline performance.</span></div>
+            </div>
+          </article>
+          <article class="panel signal-panel">
+            <div class="panel-heading"><div><div class="eyebrow eyebrow-small">THE PRESSURE MIX</div><h2>What raises the stakes</h2></div><span class="signal-badge">LIVE LENS</span></div>
+            <div id="pressureMix" class="signal-list">
+              <div class="signal-row"><span class="signal-dot signal-pink"></span><span class="signal-label">Chase under strain</span><span class="signal-value">—</span></div>
+              <div class="signal-row"><span class="signal-dot signal-blue"></span><span class="signal-label">Final five overs</span><span class="signal-value">—</span></div>
+              <div class="signal-row"><span class="signal-dot signal-gold"></span><span class="signal-label">Four or fewer wickets</span><span class="signal-value">—</span></div>
+              <div class="signal-row"><span class="signal-dot signal-green"></span><span class="signal-label">Knockout matches</span><span class="signal-value">—</span></div>
+            </div>
+            <div class="signal-foot"><span class="signal-foot-icon">✳</span><span>Signals can overlap. Use the pressure lens filter to isolate one.</span></div>
+          </article>
+        </section>
+
+        <section class="panel rankings-panel" id="rankings">
+          <div class="rankings-heading">
+            <div><div class="eyebrow eyebrow-small">THE PLAYERS WHO SHOW UP</div><h2>Pressure rankings</h2><p class="panel-subtitle">A confidence-weighted measure of performance when the match is on the line.</p></div>
+            <div class="rank-controls">
+              <div class="segmented" role="tablist" aria-label="Player type">
+                <button class="segment active" type="button" data-kind="batting" role="tab" aria-selected="true">Batters</button>
+                <button class="segment" type="button" data-kind="bowling" role="tab" aria-selected="false">Bowlers</button>
+              </div>
+              <label class="sort-select"><span class="sr-only">Sort rankings</span><select id="sortFilter" disabled><option value="rating">Pressure rating</option><option value="pressureImpact">Pressure impact</option><option value="pressureSample">Pressure sample</option><option value="player">Player name</option></select></label>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead id="rankingHead">
+                <tr><th>RANK</th><th>PLAYER</th><th>TEAM</th><th>PRESSURE INDEX</th><th>PRESSURE SR</th><th>BASELINE SR</th><th>CHANGE</th><th>PRESSURE BALLS</th></tr>
+              </thead>
+              <tbody id="rankingBody">
+                <tr class="empty-row"><td colspan="8"><span class="empty-table-icon">↗</span><strong>No player data loaded yet</strong><span>Import the supplied CSV files to calculate your pressure rankings.</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-footer"><span id="tableSummary">Rankings update with your filters</span><span class="table-note"><span class="confidence-dot"></span>Minimum sample applied</span></div>
+        </section>
+
+        <section class="method-strip" id="methodology">
+          <div class="method-icon">i</div><div><strong>How we define pressure</strong><span>A delivery is under pressure when a chase has a high required run rate, it falls in the final five overs, four or fewer wickets remain, or the match is a knockout or close finish. Your pressure lens can isolate each signal.</span></div>
+          <a href="#methodologyDetails" id="methodLink">Explore methodology <span>→</span></a>
+        </section>
+        <section class="methodology-details" id="methodologyDetails" hidden>
+          <h2>One game. Two baselines.</h2>
+          <div class="methodology-columns">
+            <p><strong>Batting:</strong> compare a player's strike rate on pressure deliveries with their strike rate on other deliveries. The index starts at 50; a positive change lifts the score and a negative change lowers it.</p>
+            <p><strong>Bowling:</strong> compare economy rate per six legal balls in pressure and non-pressure overs. Lower pressure economy and wickets taken improve the score. Wides and no-balls are excluded from legal-ball counts.</p>
+            <p><strong>Index &amp; confidence:</strong> the impact is normalized onto a 0–100 scale centered at 50, then shrunk toward 50 when pressure or baseline samples are small. Rankings require at least 30 non-pressure balls as well as the selected pressure-ball threshold.</p>
+          </div>
+          <p class="method-caveat">The index centers at 50, then weights the pressure-vs-baseline change by pressure and baseline sample confidence. The pressure definition is a transparent analytical lens, not a claim that every delivery has equal stakes. Chase thresholds adapt to match format; overlapping pressure signals count once in the default lens.</p>
+        </section>
+        <footer class="page-footer"><span>SUPERR SELECTOR · ROUND 1, SEASON 2</span><span>Built for a deeper game.</span></footer>
+      </main>
+    </div>
+
+    <div class="import-overlay" id="importOverlay" hidden>
+      <section class="import-dialog" role="dialog" aria-modal="true" aria-labelledby="importTitle">
+        <button class="dialog-close" id="closeImport" type="button" aria-label="Close import dialog">×</button>
+        <div class="dialog-mark">↑</div>
+        <div class="eyebrow eyebrow-small">BRING YOUR DATA IN</div>
+        <h2 id="importTitle">Your matches. Your insight.</h2>
+        <p>Choose the supplied <strong>Data Pack</strong> folder. Everything is processed locally in your browser; your files are never uploaded.</p>
+        <label class="folder-picker" for="dataFiles"><span class="folder-icon">▱</span><strong>Select the Data Pack folder</strong><span>Choose all CSVs together for the complete analysis</span><em>Choose folder</em></label>
+        <input id="dataFiles" type="file" accept=".csv,text/csv" multiple webkitdirectory directory hidden>
+        <div class="import-requirements"><span>Core files</span><strong>ball-by-ball</strong><i>·</i><strong>matches</strong><i>·</i><strong>competitions</strong><i>·</i><strong>teams</strong></div>
+        <div class="import-progress" id="importProgress" hidden><div class="progress-label"><span id="progressLabel">Reading your files…</span><span id="progressPercent">0%</span></div><div class="progress-track"><span id="progressBar"></span></div></div>
+        <div class="import-error" id="importError" role="alert" hidden></div>
+        <button class="dialog-cancel" id="cancelImport" type="button">Not now</button>
+      </section>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

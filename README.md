@@ -4,7 +4,7 @@ A browser-based cricket analytics dashboard for comparing batter and bowler perf
 
 ## Open the dashboard
 
-Open `index.html` in a current desktop browser. The supplied Data Pack is bundled and loads automatically. To analyze a different dataset, select **Import data** and choose its folder. The bundled core files are `ball_by_ball.csv`, `matches.csv`, `competitions.csv`, and `teams.csv`. The large ball-by-ball file is scanned twice in a streaming read so innings targets and pressure situations can be calculated without uploading the data.
+Open `index.html` in a current desktop browser. The supplied Data Pack is bundled and loads automatically. Keep `default-data.js` in the same folder as `index.html` and `app.js`, including when uploading the files to GitHub. To analyze a different dataset, select **Import data** and choose its folder. The bundled core files are `ball_by_ball.csv`, `matches.csv`, `competitions.csv`, and `teams.csv`. The large ball-by-ball file is scanned twice in a streaming read so innings targets and pressure situations can be calculated without uploading the data.
 
 The dashboard includes competition, format, season, team, player, venue country, match stage, innings, pressure-signal, sample-size, and ranking-sort filters. Switch between batter and bowler rankings with the tabs above the table.
 
